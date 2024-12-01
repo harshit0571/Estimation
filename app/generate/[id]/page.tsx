@@ -22,6 +22,7 @@ export default function GeneratePage() {
   const router = useRouter();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -50,6 +51,7 @@ export default function GeneratePage() {
   const [final, setFinal] = useState<any>(null);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsGenerating(true);
     try {
       const response = await axios.post("/api/refactor-text", {
         input: project?.description,
@@ -58,6 +60,8 @@ export default function GeneratePage() {
       setResult(response.data);
     } catch (error) {
       console.error("Error:", error);
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -180,10 +184,18 @@ export default function GeneratePage() {
 
           <button
             onClick={handleSubmit}
+            disabled={isGenerating}
             className="w-full bg-blue-600 text-white px-6 py-4 rounded-xl hover:bg-blue-700 
-              transition-colors font-bold text-lg shadow-md hover:shadow-lg"
+              transition-colors font-bold text-lg shadow-md hover:shadow-lg disabled:bg-blue-400 disabled:cursor-not-allowed"
           >
-            Generate Project Plan
+            {isGenerating ? (
+              <div className="flex items-center justify-center gap-2">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Generating...
+              </div>
+            ) : (
+              "Generate Project Plan"
+            )}
           </button>
 
           {final && (

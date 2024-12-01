@@ -9,7 +9,10 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-3">
-            <div className="bg-white p-2 rounded-lg shadow-md">
+            <div
+              className="bg-white p-2 rounded-lg shadow-md cursor-pointer"
+              onClick={() => router.push("/")}
+            >
               <svg
                 className="w-8 h-8 text-blue-900"
                 fill="none"
